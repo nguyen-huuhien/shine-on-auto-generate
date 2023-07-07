@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShineOn tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+<div style="margin: 3% 10% 0 10%;">
+    <div>
+        <h1>
+            <span>This tool was built with low cost. Please use it correctly :D</span>
+        </h1>
+        <div >
+            <h4>
+                <span >Should turn off this setting for faster download:</span>
+            </h4>
+            <a href="chrome://settings/downloads">chrome://settings/downloads</a>
+            <span> -> Ask where to save each file before downloading -> </span>
+            <span style="color: brown">turn off</span>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-3">
+                <span>Product</span>
+                <div class="input-group-prepend">
+                    <form>
+                        <select id="products" name="products" class="form-select" aria-label="Default select example">
+                            <option value="alluring-beauty">Alluring Beauty</option>
+                            <option value="forever-love">Forever Love</option>
+                            <option value="love-knot">Love Knot</option>
+                            <option value="interlocking-hearts">Interlocking Hearts</option>
+                            <option value="eternal-hope">Eternal Hope</option>
+                            <option value="cuban">Cuban</option>
+                            <option value="cross">Cross</option>
+                            <option value="customize-name">Customize name</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <div class="col-3">
+                <span>Step</span>
+                <div class="input-group-prepend">
+                    <form>
+                        <select id="types" name="types" class="form-select" aria-label="Default select example">
+                            <option value="update-variation">Update variation</option>
+                            <option value="create-product">Create product</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <div class="col-6">
+                <span>Link</span>
+                <div class="input-group">
+                    <input type="text" id="background-src-url" class="form-control">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary" onclick="downloadImages()">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+<br>
+<script src="jquery-3.6.4.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+    function shineOnUrl(code){
+        const url = 'https://api.shineon.com/v1/renders/' + code + '/make';
+        return url;
+    }
+
+    function makeid(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            counter += 1;
+        }
+        return result;
+    }
+
+
+    async function downloadImage(index ,imageSrc, productType) {
+        const image = await fetch(imageSrc)
+        const imageBlog = await image.blob()
+        const imageURL = URL.createObjectURL(imageBlog)
+
+        const link = document.createElement('a')
+        link.href = imageURL
+        document.body.appendChild(link)
+        link.download = productType + '-' + index + '-' + makeid(8)
+        link.click()
+        document.body.removeChild(link)
+    }
+
+    function getAlluringBeautyCodes(key) {
+        const codes = new Map();
+        codes.set('14S', [12983, 13123,	13129, 13106, 13112, 12989, 13115]);
+        codes.set('14L', [12983, 12219, 13129, 13353, 13899, 12237, 12239]);
+        codes.set('18S', [14972, 12978, 13129, 13302, 12980, 13080, 12413]);
+        codes.set('18L', [12042, 13434, 13129, 12969, 12120, 12978, 12970]);
+        return codes.get(key);
+    }
+
+    function getForeverLoveCodes(key) {
+        const codes = new Map();
+        codes.set('14S', [10609, 1721, 13453, 13749, 5125, 13972, 17515]);
+        codes.set('14L', [10617, 1721, 1719, 13453, 1720, 13972, 13964]);
+        codes.set('18S', [10610, 1721, 13750, 13452, 5137, 1728, 1729]);
+        codes.set('18L', [10610, 1721, 13335, 13452, 13445, 16992, 14244]);
+        return codes.get(key);
+    }
+
+    function getLoveKnotCodes(key) {
+        const codes = new Map();
+        codes.set('14S', [12044, 12132, 12136, 13330, 12155, 14170, 12151]);
+        codes.set('14L', [12044, 12132, 12169, 13333, 12176, 12166, 12151]);
+        codes.set('18S', [12018, 12132, 12019, 14185, 12388, 14188, 12291]);
+        codes.set('18L', [12018, 12132, 12386, 12610, 12746, 14188, 12291]);
+        return codes.get(key) ;
+    }
+
+    function getInterlockingHeartsCodes(key) {
+        const codes = new Map();
+        codes.set('14S', [12046, 12259, 12251, 13328, 12243, 12241, 14140]);
+        codes.set('14L', [12046, 12259, 12274, 12273, 12287, 12280, 14140]);
+        codes.set('18S', [12045, 12259, 13326, 12774, 12775, 12076, 12448]);
+        codes.set('18L', [12045, 12259, 12106, 14204, 12077, 12108, 12448]);
+        return codes.get(key);
+    }
+
+    function getEternalHopeCodes(key) {
+        const codes = new Map();
+        codes.set('14S', [11104, 11943, 8712, 8718, 12636, 10062, 12641]);
+        codes.set('14L', [11104, 11943, 8729, 8727, 12636, 8730, 12641]);
+        return codes.get(key);
+    }
+
+    // function getCubanCodes(key) {
+    //     const codes = new Map();
+    //     codes.set('14S', [11570, 11571, 11573, 11586, 13304, 11510, 11488, 11501, 11585]);
+    //     codes.set('14L', [11570, 11494, 11500, 11495, 13644, 13305, 11510, 11488, 11501]);
+    //     codes.set('18S', [11645, 11493, 11648, 11650, 11657, 11647, 11479, 11483, 11461]);
+    //     codes.set('18L', [11645, 11493, 11485, 11475, 11473, 11473, 11483, 11461, 11486]);
+    //     return codes.get(key) ;
+    // }
+
+    // function getCrossCodes(key) {
+    //     const codes = new Map();
+    //     codes.set('14S', [3421, 8679, 2651, 2648, 2650, 2640, 2644, 2646, 14717]);
+    //     codes.set('14L', [3421, 8679, 2974, 2975, 2978, 9541, 2646, 14717, 14716]);
+    //     return codes.get(key);
+    // }
+
+    // function getCustomizeNameCodes(key) {
+    //     const codes = new Map();
+    //     codes.set('14S', [14205, 'https://hehehehsss.s3.us-east-2.amazonaws.com/product-background/common-image/customize-position2.jpg', 14695, 14694, 16106, 16087, 16147, 16082, 14601]);
+    //     return codes.get(key);
+    // }
+
+    function tempAlert(msg,duration)
+    {
+        const el = document.createElement("h3");
+        el.setAttribute("style","background-color:gray;text-align:center;");
+        el.innerHTML = msg;
+        setTimeout(function(){
+            el.parentNode.removeChild(el);
+        },duration);
+        document.body.appendChild(el);
+    }
+
+    function downloadImages() {
+        tempAlert('Please wait!', 3000);
+        const backGroundSrcUrl = document.getElementById('background-src-url').value;
+        if (backGroundSrcUrl === '') {
+            return;
+        }
+        let listTypeOfProduct = ['14S'];
+        const type = $('#types').find(":selected").val();
+
+        if (type === 'update-variation') {
+            listTypeOfProduct = ['14S','14L','18S','18L'];
+        }
+
+        for (let j = 0; j < listTypeOfProduct.length; j++) {
+            let codes;
+            const productType = listTypeOfProduct[j];
+
+            let withReplacePosition2 = true;
+            switch ($('#products').find(":selected").val()) {
+                case "alluring-beauty":
+                    codes = this.getAlluringBeautyCodes(productType);
+                    break;
+                case "forever-love":
+                    codes = this.getForeverLoveCodes(productType);
+                    break;
+                case "love-knot":
+                    codes = this.getLoveKnotCodes(productType);
+                    break;
+                case "interlocking-hearts":
+                    codes = this.getInterlockingHeartsCodes(productType);
+                    break;
+                case "cuban":
+                    codes = this.getCubanCodes(productType);
+                    withReplacePosition2 = false;
+                    break;
+                case "eternal-hope":
+                    codes = this.getEternalHopeCodes(productType);
+                    break;
+                case "cross":
+                    codes = this.getCrossCodes(productType);
+                    withReplacePosition2 = false;
+                    break;
+                case "customize-name":
+                    codes = this.getCustomizeNameCodes(productType);
+                    break;
+                default:
+                    codes = [];
+            }
+
+            if (codes === undefined) {
+                continue;
+            }
+
+            for (let i = 0; i < codes.length; i++) {
+                let url = shineOnUrl(codes[i]);
+                // if (i === 1 && withReplacePosition2) {
+                //     downloadImage(2, codes[1], productType)
+                //     continue;
+                // }
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    headers: {"Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiYjdlMmU1NWU0M2I3Zjc5NjY4OWEyODIyNTYzYzA2OTU4ZWE3NjVlY2Y3YzJmM2FkOWZiZDE5YTcwZjZmNjJkYjU0ZjU3MTJiMGE3MTViZGMiLCJpYXQiOjE2NzgxMDc1NjgsIm5iZiI6MTY3ODEwNzU2OCwiZXhwIjoxNzA5NzI5OTY4LCJzdWIiOiIyMTExOTIiLCJzY29wZXMiOlsicmVhZF9zaG9wIiwicmVhZF9vcmRlcnMiLCJyZWFkX3Byb2R1Y3RfdGVtcGxhdGVzIiwicmVhZF90cmFuc2Zvcm1hdGlvbnMiLCJ3cml0ZV9hcnR3b3JrIiwid3JpdGVfc2t1cyIsIndyaXRlX29yZGVycyJdfQ.uS-SILQAuTw5xkWYZMJCmpH0MBpC6_4hrEwQhkoRQs9vp6co9J2kCKZySQb5WQI6aCPKVF4WOrNQMd_FxRV1ge_mmdCFSAVV2BTvI-TSoHBkC4FZcv_yji-AUFEGQuvTMkGt073z73K8yczqSblCdfdldAWrpsQgvlkxo-sOIBsDFTZ4sZ_txF5jDQCYIcTN7Vs7YfVqBCiw86-TT-o_W0Rn5E24jk1KXU92hvIqFgB7asz6d3omrPCsv-zk2cFF-xlEvcLvAqfdNua2ammnrVZALVLW1Oo9OEku9LSXP0Ik_wmWKqfrNR5Bw5_YvrUp3L-rL1r85SXLL5BMJHkIxJzKe4Ue1N2bM58qVfR_4Em-YhNfsK_wpA51l3LXZBheVCoid-pGR1J_JWzENusmIJG4opcL9pKfmFyeJyk3iA1Z0XGDHZ0y3FnFjTPstJEpFFcYem8zQ1BS5lgXFfJu66dw1MA55KpiYpJZB-n_koA6Faa-suyCUwM1XRwA2zKE7aleoQMna5ToxVrhEiBCoF3ioULBEA1Ok2k1dJrc58gyGd8E1gJRuvdW10vXe2cnutCutAVWNA391szNyxxJg_KQ8jD-UuCt7RSZSB8pnKYVHq2T_9qRrXBLmmhCcoeG1KH4Aavi_vw6g7m7EYDdI5j6RktehihBTEJcMHPy13Y"},
+                    data: {
+                        "src" : backGroundSrcUrl,
+                    },
+                    success: async function (response) {
+                        const responseUrl = response.render.make.src;
+                        await downloadImage(i + 1, responseUrl, productType);
+                    },
+                });
+            }
+        }
+    }
+</script>
+</body>
+
+</html>
